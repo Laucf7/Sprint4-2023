@@ -4,19 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <title>Document</title>
 </head>
 
 <body>
-    <div class="container text-center w-25 mt-4 border">
-        <form>
-            <h5>GOOD MORNING! HERE YOU HAVE A JOKE:</h5>
-
-        </form>
-
-        <div class="joke-container mt-4"> </div>
-        
-        <button type="submit">NEW JOKE!</button>
+    <div class="container d-flex justify-content-center align-items-center min-vh-100">
+        <div class="text-center p-3 bg-light rounded">
+            <form>
+                <h3 class="font-weight-bold">PREPARAT PER RIURE? &#128513</h3>
+    
+            </form>
+    
+            <div class="joke-container mt-4"> </div>
+            
+            <button type="submit" class="btn btn-primary mt-4">NEW JOKE!</button>
+        </div>
+       
     </div>
 
     <script type="module" src="build/src/index.js"></script>
