@@ -1,14 +1,18 @@
 "use strict";
-//NIVELL 1:
-//Exercici 1
+//NIVELL 1
 const btn = document.querySelector('button');
 const jokeContainer = document.querySelector('.joke-container');
+const radioButtons = document.querySelectorAll('.radio-btn');
+let currentJoke;
+const reportJokes = [];
 document.addEventListener("DOMContentLoaded", function () {
     bringJoke();
 });
 btn.addEventListener("click", (e) => {
     e.preventDefault();
-    bringJoke();
+    saveScoreDate();
+    currentJoke = bringJoke();
+    console.log(reportJokes);
 });
 function bringJoke() {
     const options = {
@@ -18,10 +22,26 @@ function bringJoke() {
     };
     fetch("https://icanhazdadjoke.com/", options)
         .then(res => res.json())
-        .then(respuesta => createJoke(respuesta));
+        .then(respuestaJson => {
+        currentJoke = respuestaJson.joke;
+        createJoke(respuestaJson);
+    });
 }
-function createJoke(respuesta) {
-    jokeContainer.textContent = respuesta.joke;
-    console.log(respuesta);
+function createJoke(respuestaJson) {
+    jokeContainer.textContent = respuestaJson.joke;
+    console.log(respuestaJson);
+}
+function saveScoreDate() {
+    let selectedInput = document.querySelector('input[name="punctuation"]:checked');
+    let selectedInputValue;
+    if (selectedInput == null) {
+        selectedInputValue = "No score";
+    }
+    else {
+        selectedInputValue = parseInt(selectedInput.value);
+        selectedInput.checked = false;
+    }
+    let currentDate = new Date().toISOString().slice(0, 10);
+    reportJokes.push({ joke: currentJoke, score: selectedInputValue, date: currentDate });
 }
 //# sourceMappingURL=index.js.map

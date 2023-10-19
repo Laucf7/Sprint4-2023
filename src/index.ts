@@ -1,8 +1,12 @@
-//NIVELL 1:
-//Exercici 1
+//NIVELL 1
 
 const btn = document.querySelector('button') as HTMLButtonElement;
 const jokeContainer = document.querySelector('.joke-container')  as HTMLDivElement;
+
+const radioButtons = document.querySelectorAll('.radio-btn');
+
+let currentJoke: any;
+const reportJokes : Joke[] = [];
 
 document.addEventListener("DOMContentLoaded", function() {
   bringJoke();
@@ -10,8 +14,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
 btn.addEventListener("click", (e)=> {
   e.preventDefault();
-  bringJoke();
-
+  saveScoreDate();
+  
+  currentJoke = bringJoke();
+  console.log(reportJokes);
 });
 
 function bringJoke(){
@@ -23,11 +29,37 @@ function bringJoke(){
 
   fetch("https://icanhazdadjoke.com/", options)
   .then (res=> res.json())
-  .then (respuesta => createJoke(respuesta))
+  .then (respuestaJson => {
+    currentJoke = respuestaJson.joke;
+    createJoke(respuestaJson);
+  })
+  
 }
 
 
-function createJoke(respuesta:any){
-  jokeContainer.textContent = respuesta.joke;
-    console.log(respuesta)  
+function createJoke(respuestaJson:any){
+  jokeContainer.textContent = respuestaJson.joke;
+  console.log(respuestaJson);
  }
+
+
+ interface Joke {
+  joke: string;
+  score: number | null;
+  date: string;
+}
+
+
+function saveScoreDate(): void {
+  let selectedInput = document.querySelector('input[name="punctuation"]:checked') as HTMLInputElement;
+  let selectedInputValue : any;
+  if (selectedInput == null){
+      selectedInputValue = "No score";
+  }else{
+      selectedInputValue = parseInt(selectedInput.value);
+      selectedInput.checked=false;
+  }
+  let currentDate = new Date().toISOString().slice(0, 10);
+  reportJokes.push({joke:currentJoke, score: selectedInputValue, date:currentDate});
+}
+
