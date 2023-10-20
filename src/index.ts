@@ -1,15 +1,16 @@
-//NIVELL 1
-
 const btn = document.querySelector('button') as HTMLButtonElement;
 const jokeContainer = document.querySelector('.joke-container')  as HTMLDivElement;
-
 const radioButtons = document.querySelectorAll('.radio-btn');
 
+const meteoContainer = document.querySelector('.meteo')  as HTMLDivElement;
+
 let currentJoke: any;
+let weather: string;
 const reportJokes : Joke[] = [];
 
 document.addEventListener("DOMContentLoaded", function() {
   bringJoke();
+  bringMeteo();
 });
 
 btn.addEventListener("click", (e)=> {
@@ -61,5 +62,24 @@ function saveScoreDate(): void {
   }
   let currentDate = new Date().toISOString().slice(0, 10);
   reportJokes.push({joke:currentJoke, score: selectedInputValue, date:currentDate});
+}
+
+
+
+
+function bringMeteo(){
+  const options = {
+    headers: {
+      'Accept': 'application/json'  
+    }
+  }
+
+  fetch('https://www.el-tiempo.net/api/json/v2/provincias/08/municipios/08019', options) //link especific per Barcelona
+  .then (res=> res.json())
+  .then (respuestaJson =>{
+     weather = `${respuestaJson.municipio.NOMBRE_PROVINCIA} : ${respuestaJson.temperatura_actual}ºC`
+     meteoContainer.textContent = weather;
+    console.log(respuestaJson);
+    })
 }
 
