@@ -6,7 +6,8 @@ declare let currentJoke: any;
 declare let weather: string;
 declare const reportJokes: Joke[];
 declare function bringJoke(): void;
-declare function createJoke(respuestaJson: any): void;
+declare function apiJokes(): void;
+declare function apiChuck(): void;
 interface Joke {
     joke: string;
     score: number | null;

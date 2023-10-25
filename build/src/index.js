@@ -12,11 +12,21 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 btn.addEventListener("click", (e) => {
     e.preventDefault();
+    bringJoke();
     saveScoreDate();
-    currentJoke = bringJoke();
     console.log(reportJokes);
 });
 function bringJoke() {
+    const numeroAleatorio = Math.random();
+    const umbral = 0.5;
+    if (numeroAleatorio < umbral) {
+        apiJokes();
+    }
+    else {
+        apiChuck();
+    }
+}
+function apiJokes() {
     const options = {
         headers: {
             'Accept': 'application/json'
@@ -26,12 +36,25 @@ function bringJoke() {
         .then(res => res.json())
         .then(respuestaJson => {
         currentJoke = respuestaJson.joke;
-        createJoke(respuestaJson);
+        jokeContainer.textContent = currentJoke;
+        //console.log(currentJoke);
+        console.log(respuestaJson);
     });
 }
-function createJoke(respuestaJson) {
-    jokeContainer.textContent = respuestaJson.joke;
-    console.log(respuestaJson);
+function apiChuck() {
+    const options = {
+        headers: {
+            'Accept': 'application/json'
+        }
+    };
+    fetch("https://api.chucknorris.io/jokes/random", options)
+        .then(res => res.json())
+        .then(respuestaJson => {
+        currentJoke = respuestaJson.value;
+        jokeContainer.textContent = currentJoke;
+        //console.log(currentJoke);
+        console.log(respuestaJson);
+    });
 }
 function saveScoreDate() {
     let selectedInput = document.querySelector('input[name="punctuation"]:checked');
@@ -57,7 +80,7 @@ function bringMeteo() {
         .then(respuestaJson => {
         weather = `${respuestaJson.municipio.NOMBRE_PROVINCIA} : ${respuestaJson.temperatura_actual}ºC`;
         meteoContainer.textContent = weather;
-        console.log(respuestaJson);
+        //console.log(respuestaJson);
     });
 }
 //# sourceMappingURL=index.js.map
